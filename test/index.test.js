@@ -36,3 +36,11 @@ test('formatToken - Issue #1: handles null replacement without throwing TypeErro
   const result = formatToken('discount % 50', { replace: { '%': null } });
   assert.equal(result, 'discount-50');
 });
+
+// Regression Test for Issue #1 (undefined mapping values):
+// formatToken throws TypeError when custom replace mapping contains undefined
+test('formatToken - Issue #1: handles undefined replacement without throwing TypeError', () => {
+  // When an option mapping value is undefined, the target character should be removed
+  const result = formatToken('discount # 50', { replace: { '#': undefined } });
+  assert.equal(result, 'discount-50');
+});
