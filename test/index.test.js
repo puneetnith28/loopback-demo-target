@@ -44,3 +44,12 @@ test('formatToken - Issue #1: handles undefined replacement without throwing Typ
   const result = formatToken('discount # 50', { replace: { '#': undefined } });
   assert.equal(result, 'discount-50');
 });
+
+// Regression Test for Issue #1 (combined mapping):
+// formatToken throws TypeError when the same replace mapping contains both
+// a null value and an undefined value
+test('formatToken - Issue #1: handles null and undefined replacements in the same mapping', () => {
+  // Both mapping values should remove their matched characters without throwing
+  const result = formatToken('> % and # <', { replace: { '%': null, '#': undefined, '>': 'gt' } });
+  assert.equal(result, 'gt-and');
+});
