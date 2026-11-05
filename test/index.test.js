@@ -53,3 +53,11 @@ test('formatToken - Issue #1: handles null and undefined replacements in the sam
   const result = formatToken('> % and # <', { replace: { '%': null, '#': undefined, '>': 'gt' } });
   assert.equal(result, 'gt-and');
 });
+
+// Regression Test for Issue #1 (falsy non-null mapping values):
+// Falsy non-null replacement values such as 0 and false must be kept as text,
+// not silently removed the way null and undefined values are
+test('formatToken - Issue #1: keeps falsy non-null replacement values as text', () => {
+  const result = formatToken('count > x', { replace: { '>': 0, 'x': false } });
+  assert.equal(result, 'count-0-false');
+});
