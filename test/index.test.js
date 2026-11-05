@@ -36,3 +36,28 @@ test('formatToken - Issue #1: handles null replacement without throwing TypeErro
   const result = formatToken('discount % 50', { replace: { '%': null } });
   assert.equal(result, 'discount-50');
 });
+
+// Regression Test for Issue #1 (undefined mapping values):
+// formatToken throws TypeError when custom replace mapping contains undefined
+test('formatToken - Issue #1: handles undefined replacement without throwing TypeError', () => {
+  // When an option mapping value is undefined, the target character should be removed
+  const result = formatToken('discount # 50', { replace: { '#': undefined } });
+  assert.equal(result, 'discount-50');
+});
+
+// Regression Test for Issue #1 (combined mapping):
+// formatToken throws TypeError when the same replace mapping contains both
+// a null value and an undefined value
+test('formatToken - Issue #1: handles null and undefined replacements in the same mapping', () => {
+  // Both mapping values should remove their matched characters without throwing
+  const result = formatToken('> % and # <', { replace: { '%': null, '#': undefined, '>': 'gt' } });
+  assert.equal(result, 'gt-and');
+});
+
+// Regression Test for Issue #1 (falsy non-null mapping values):
+// Falsy non-null replacement values such as 0 and false must be kept as text,
+// not silently removed the way null and undefined values are
+test('formatToken - Issue #1: keeps falsy non-null replacement values as text', () => {
+  const result = formatToken('count > x', { replace: { '>': 0, 'x': false } });
+  assert.equal(result, 'count-0-false');
+});

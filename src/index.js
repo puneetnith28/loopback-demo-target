@@ -23,11 +23,9 @@ export function formatToken(input, options = {}) {
 
   // Apply custom character replacements
   for (const [key, value] of Object.entries(replace)) {
-    // SEEDED BUG (Issue #1):
-    // Calling .toString() on value throws TypeError when value is null or undefined.
-    // Passing { '%': null } to remove special characters causes:
-    // TypeError: Cannot read properties of null (reading 'toString')
-    text = text.replaceAll(key, value.toString());
+    // A null or undefined mapping removes the matched character
+    const replacement = value == null ? '' : value.toString();
+    text = text.replaceAll(key, replacement);
   }
 
   // Replace non-alphanumeric characters with the delimiter
