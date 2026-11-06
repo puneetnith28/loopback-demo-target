@@ -23,11 +23,7 @@ export function formatToken(input, options = {}) {
 
   // Apply custom character replacements
   for (const [key, value] of Object.entries(replace)) {
-    // SEEDED BUG (Issue #1):
-    // Calling .toString() on value throws TypeError when value is null or undefined.
-    // Passing { '%': null } to remove special characters causes:
-    // TypeError: Cannot read properties of null (reading 'toString')
-    text = text.replaceAll(key, value.toString());
+    text = text.replaceAll(key, value === null || value === undefined ? '' : String(value));
   }
 
   // Replace non-alphanumeric characters with the delimiter
