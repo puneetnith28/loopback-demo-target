@@ -39,6 +39,8 @@ The initial baseline fails with 1 test failure:
   TypeError: Cannot read properties of null (reading 'toString')
 ```
 
+
+
 ### Proposed Fix
 In `src/index.js`, replace:
 ```javascript
